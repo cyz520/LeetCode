@@ -1,0 +1,42 @@
+典型的动态规划题目：https://leetcode-cn.com/problems/unique-paths/solution/bu-tong-lu-jing-by-leetcode-solution-hzjf/
+    解法1：递归 --- 直接超时
+    	class Solution {
+	    int result2 = 0;
+	    public int uniquePaths(int m, int n) {
+		seek(m, n, 1, 1);
+		return result2;
+	    }
+	    private void seek(int m, int n, int x, int y) {
+		if (x == m && y == n) {
+		    result2++;
+		    return;
+		}
+		if (x < m) {
+		    seek(m, n, x + 1, y);
+		}
+		if (y < n) {
+		    seek(m, n, x, y + 1);
+		}
+	    }
+    	}
+    解法2：动态规划
+        做动态规划的关键点：
+        a、找到动态规划转移方程：f(i,j) = f(i−1,j) + f(i,j−1) 
+        b、创建一个状态数组，比例一维数组或者二维数组：f(i, j)表示从左上角走到 (i, j)的路径数量
+	class Solution {
+	    public int uniquePaths(int m, int n) {
+		int[][] f = new int[m][n];
+		for (int i = 0; i < m; ++i) {
+		    f[i][0] = 1;
+		}
+		for (int j = 0; j < n; ++j) {
+		    f[0][j] = 1;
+		}
+		for (int i = 1; i < m; ++i) {
+		    for (int j = 1; j < n; ++j) {
+			f[i][j] = f[i - 1][j] + f[i][j - 1];
+		    }
+		}
+		return f[m - 1][n - 1];
+	    }
+	}
